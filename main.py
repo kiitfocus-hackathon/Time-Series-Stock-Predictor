@@ -1,8 +1,6 @@
 
 from fastapi import FastAPI
 from fetch_data import fetch_data
-# from preprocess_data import preprocess_data
-# from predictor import predict
 
 app = FastAPI()
 api_counter = 0
