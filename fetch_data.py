@@ -19,6 +19,7 @@ def fetch_daily_prices(symbol,API_KEY):
     }
     response = requests.get(BASE_URL, params=params)
     data = pd.read_csv(io.StringIO(response.content.decode('utf-8')))
+    print(data)
     return data
 def calculate_technical_indicators(data):
     # Convert to pandas DataFrame
@@ -43,6 +44,7 @@ def get_api_key(api_counter):
         API_KEY = os.getenv("API_KEY_2")
     if api_counter == 2:
         API_KEY = os.getenv("API_KEY_3")
+    return API_KEY
 
 def fetch_data(symbol,api_counter):
     symbol += ".BSE"
