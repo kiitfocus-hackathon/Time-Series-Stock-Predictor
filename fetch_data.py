@@ -50,7 +50,7 @@ def fetch_data(symbol,api_counter):
     filename = f"{symbol}_data_{date.today()}.csv"
     stock_data=""
     if not os.path.exists(filename):
-        daily_prices = fetch_daily_prices(symbol)
+        daily_prices = fetch_daily_prices(symbol,API_KEY)
         # data = daily_prices
         data = calculate_technical_indicators(daily_prices)
         data.to_csv(filename, index=False)
