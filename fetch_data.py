@@ -49,7 +49,6 @@ def get_api_key(api_counter):
 def fetch_data(symbol,api_counter):
     symbol += ".BSE"
     API_KEY = get_api_key(api_counter)
-    print(api_counter, " api key is: ", API_KEY)
     filename = f"{symbol}_data_{date.today()}.csv"
     stock_data=""
     if not os.path.exists(filename):
