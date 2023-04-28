@@ -4,7 +4,7 @@
  - pip install ta
  - pip install fastapi uvicorn
  - pip install python-dotenv
-
+ - pip install tensorflow
 ## create a .env file
 
 Write the below things in the env file 
