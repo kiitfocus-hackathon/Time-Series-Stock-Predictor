@@ -14,12 +14,11 @@ def fetch_daily_prices(symbol,API_KEY):
         'function': 'TIME_SERIES_DAILY_ADJUSTED',
         'symbol': symbol,
         'apikey': API_KEY,
-        'outputsize': 'compact',
+        'outputsize': 'full',
         'datatype': 'csv'
     }
     response = requests.get(BASE_URL, params=params)
     data = pd.read_csv(io.StringIO(response.content.decode('utf-8')))
-    print(data)
     return data
 def calculate_technical_indicators(data):
     # Convert to pandas DataFrame
@@ -35,7 +34,7 @@ def calculate_technical_indicators(data):
 
     # Calculate volume data
     df['volume'] = ta.volume.on_balance_volume(df['close'], df['volume'])
-    df = df.sort_values('timestamp', ascending=False)
+    # df = df.sort_values('timestamp', ascending=False)
     return df
 
 def get_api_key(api_counter):
@@ -62,4 +61,4 @@ def fetch_data(symbol,api_counter):
 
     print(stock_data)
 
-    return stock_data
+    return filename
