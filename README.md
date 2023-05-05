@@ -1,7 +1,7 @@
 # Time-Series-Stock-Predictor
 ### Tech Stack Used: 
  - Python fastApi for backend
- - React for Frontend
+ - HTML & JS for Frontend
  - postgreSQL 14 as Database 
 
 Follow the steps below to setup your project.
