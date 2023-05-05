@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
+from sklearn.metrics import mean_squared_error
+from math import sqrt
 
 def load_data(filename):
     stock_data = pd.read_csv(filename)
@@ -19,12 +21,14 @@ def preprocess_data(stock_data):
     y_scaled = scaler.fit_transform(y.reshape(-1, 1))
     
     return X_scaled, y_scaled
+
 def create_sequences(X, y, time_steps=1):
     Xs, ys = [], []
     for i in range(len(X) - time_steps):
         Xs.append(X[i:(i + time_steps)])
         ys.append(y[i + time_steps])
     return np.array(Xs), np.array(ys)
+
 def build_model(X_train):
     model = tf.keras.Sequential([
         tf.keras.layers.LSTM(64, input_shape=(X_train.shape[1], X_train.shape[2])),
@@ -48,6 +52,14 @@ def make_predictions(model, X_test):
     
     return y_pred
 
+def evaluate_model(y_test, y_pred):
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = sqrt(mse)
+    accuracy = (1 - (rmse / np.mean(y_test))) * 100
+    print('MSE: %.3f' % mse)
+    print('RMSE: %.3f' % rmse)
+    return accuracy
+
 def predict(filename):
     df = load_data(filename)
     
@@ -65,15 +77,20 @@ def predict(filename):
     
     # Evaluate performance on the testing set
     test_loss = model.evaluate(X_test, y_test, verbose=0)
-    print("test loss: ",test_loss)
-
+    print("Test loss:", test_loss)
+    
     # Make predictions
     y_pred = make_predictions(model, X_test)
     # Inverse scaling of the predicted value
     scaler = MinMaxScaler()
     scaler.fit(df[['close']]) # Fit the scaler on the original closing prices
     y_pred_inv = scaler.inverse_transform(y_pred)
+    y_test_inv = scaler.inverse_transform(y_test)
     
+    # Evaluate model performance
+    model_accuracy = evaluate_model(y_test_inv, y_pred_inv)
+    
+    # Adjust predicted price within 10% range from the previous price
     prev_price = df['close'].iloc[-1]
     y_pred_inv = y_pred_inv[-1][0]
     max_price = prev_price * 1.10
@@ -83,4 +100,4 @@ def predict(filename):
     # Return predicted price
     print("predicted price is ", y_pred_inv)
 
-    return y_pred_inv
+    return y_pred_inv,model_accuracy
