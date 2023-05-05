@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Time series forecasting predictor</title>
+  </head>
+  <body>
+    <form id="inputForm">
+      <label for="inputField">Enter the stock you want to predict</label>
+      <input type="text" id="inputField" />
+      <button type="submit" id="submitButton">Submit</button>
+    </form>
+    <div id="outputDiv"></div>
+    <!-- JavaScript code -->
+    <script>
+      $(document).ready(function () {
+        $("#inputForm").submit(function (event) {
+          event.preventDefault(); // Prevent form from submitting normally
+          var inputValue = $("#inputField").val();
+          print(inputValue);
+          var apiUrl = "http://localhost:5000/api/v1/stock_prices/" + inputValue;
+          fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+              $("#outputDiv").text(data.prediction);
+            })
+            .catch(error => console.error(error));
+        });
+      });
+    </script>
+  </body>
+</html>
