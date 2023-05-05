@@ -1,10 +1,19 @@
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 from fetch_data import fetch_data
 from model_train import predict
 from db_service import save_stock_data, find_stock_data_by_stock_date
 app = FastAPI()
+app.add_middleware(
+
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 api_counter = 0
 @app.get("/api/v1/stock_prices/{symbol}")
 def predict_stock_prices(symbol: str):
