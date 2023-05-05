@@ -1,8 +1,9 @@
-
 from fastapi import FastAPI
 import numpy as np
 from fetch_data import fetch_data
 from model_train import predict
+import os
+import dotenv
 app = FastAPI()
 api_counter = 0
 @app.get("/api/v1/stock_prices/{symbol}")

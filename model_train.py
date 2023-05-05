@@ -66,13 +66,20 @@ def predict(filename):
     # Evaluate performance on the testing set
     test_loss = model.evaluate(X_test, y_test, verbose=0)
     print("test loss: ",test_loss)
-
+    
     # Make predictions
     y_pred = make_predictions(model, X_test)
     # Inverse scaling of the predicted value
     scaler = MinMaxScaler()
     scaler.fit(df[['close']]) # Fit the scaler on the original closing prices
     y_pred_inv = scaler.inverse_transform(y_pred)
+    y_test_inv = scaler.inverse_transform(y_test)
+    
+    # Calculate root mean squared error and mean absolute percentage error
+    rmse = np.sqrt(tf.keras.metrics.mean_squared_error(y_test_inv, y_pred_inv))
+    mape = tf.keras.metrics.mean_absolute_percentage_error(y_test_inv, y_pred_inv)
+    print("RMSE: ", rmse)
+    print("MAPE: ", mape)
     
     prev_price = df['close'].iloc[-1]
     y_pred_inv = y_pred_inv[-1][0]
