@@ -11,19 +11,22 @@
     </form>
     <div id="outputDiv"></div>
     <!-- JavaScript code -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       $(document).ready(function () {
         $("#inputForm").submit(function (event) {
           event.preventDefault(); // Prevent form from submitting normally
           var inputValue = $("#inputField").val();
-          print(inputValue);
-          var apiUrl = "http://localhost:5000/api/v1/stock_prices/" + inputValue;
+          console.log(inputValue);
+          var apiUrl =
+            "http://localhost:8000/api/v1/stock_prices/" + inputValue;
+          console.log("APi", apiUrl);
           fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
               $("#outputDiv").text(data.prediction);
             })
-            .catch(error => console.error(error));
+            .catch((error) => console.error(error));
         });
       });
     </script>
