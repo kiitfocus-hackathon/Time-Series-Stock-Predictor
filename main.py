@@ -14,10 +14,10 @@ def predict_stock_prices(symbol: str):
 
     prediction = find_stock_data_by_stock_date(symbol)
     if prediction:
-        return {'prediction': prediction.stock_price}
+        return {'prediction': prediction.stock_price, 'model_accuracy': prediction.model_accuracy}
 
     filename = fetch_data(symbol, api_counter)
     api_counter+=1
-    forecast = predict(filename)
-    save_stock_data(symbol, forecast, 70.0)
-    return {'prediction': float(forecast)}
+    forecast,model_accuracy = predict(filename)
+    save_stock_data(symbol, forecast, model_accuracy)
+    return {'prediction': float(forecast), 'model_accuracy': float(model_accuracy)}
