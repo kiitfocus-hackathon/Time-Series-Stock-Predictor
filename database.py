@@ -7,10 +7,8 @@ import os
 import io
 
 load_dotenv()
-database_URL = os.getenv("DATABASE_URL")
-
 # Define the database connection settings
-SQLALCHEMY_DATABASE_URL = database_URL
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Create the database engine
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -19,7 +17,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Define a Base class for declarative SQLAlchemy models
-Base = sqlalchemy.orm.declarative_base()
+Base = declarative_base()
 
 # Define the StockData model
 class StockData(Base):
@@ -29,7 +27,7 @@ class StockData(Base):
     stock_name = Column(String)
     stock_price = Column(Float)
     model_accuracy = Column(Float)
-    prediction_date = Column(DateTime, default=datetime.now)
+    prediction_date = Column(DateTime, default=datetime.today().date())
 
 
 Base.metadata.create_all(bind=engine)
